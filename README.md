@@ -1,1 +1,1 @@
-# rxn-database
+# rxndatabase
