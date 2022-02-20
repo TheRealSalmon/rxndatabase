@@ -20,6 +20,9 @@ class Condition(models.Model):
     degree_of_caution = models.CharField(max_length=50)
     comments = models.CharField(max_length=200)
 
+    def __str__(self):
+        return self.comments
+
 class Reaction(models.Model):
     condition = models.ForeignKey(
         Condition,
@@ -32,3 +35,6 @@ class Reaction(models.Model):
     reactant5_smiles = models.CharField(max_length=200)
     product_smiles = models.CharField(max_length=200)
     rxn_yield = models.IntegerField()
+
+    def __str__(self):
+        return self.product_smiles
