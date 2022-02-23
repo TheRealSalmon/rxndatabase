@@ -1,0 +1,12 @@
+{% extends "template.html" %}
+
+{% block content %}
+  <h1> Condition by Transformation </h1>
+  <u1>
+    {% for cd in conditions_by_transformation_list %}
+      <li> {{cd.comments}} </li>
+    {% empty %}
+      <p> No conditions for this transformation in database </p>
+    {% endfor %}
+  </u1>
+{% endblock %}

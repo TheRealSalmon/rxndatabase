@@ -1,0 +1,12 @@
+{% extends "template.html" %}
+
+{% block content %}
+  <h1> Transformations </h1>
+  <u1>
+    {% for tf in transformation_list %}
+      <li> {{tf.name}} </li>
+    {% empty %}
+      <p> No transformations in database </p>
+    {% endfor %}
+  </u1>
+{% endblock %}
