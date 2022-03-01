@@ -1,4 +1,3 @@
-from ast import Sub
 from django.shortcuts import render
 from django.views import generic
 from django.http import HttpResponseRedirect
@@ -7,6 +6,13 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .models import Transformation, Chemical, Condition, Substrate, Reaction
 from .forms import TransformationForm, ChemicalForm, ConditionForm, SubstrateForm, ReactionForm
 
+from rdkit import Chem
+from rdkit.Chem import Draw
+
+from PIL import Image
+import base64
+import io
+
 # Create your views here.
 def home(request):
     latest_substrates = reversed(Substrate.objects.order_by('id')[:10])
@@ -14,6 +20,18 @@ def home(request):
         'substrate_list': latest_substrates,
     }
     return render(request, 'home.html', context)
+
+def get_base64_image_from_smiles(smi):
+    # taken from https://iwatobipen.wordpress.com/2020/01/17/draw-rdkit-mol-reaction-object-on-html-without-static-png-image-rdkit-memo/
+    m = Chem.MolFromSmiles(smi)
+    drawer = Draw.rdMolDraw2D.MolDraw2DCairo(300,300)
+    drawer.DrawMolecule(m)
+    drawer.FinishDrawing()
+
+    bytes_io = io.BytesIO()
+    text = drawer.GetDrawingText()
+
+    return base64.b64encode(text).decode('utf8')
 
 class TransformationListView(generic.ListView):
     model = Transformation
@@ -30,8 +48,8 @@ class TransformationListView(generic.ListView):
                 num_related_substrates += len(related_substrates)
             transformation_details.append({
                                            'records': f'{len(related_conditions)} condition(s), {num_related_substrates} substrate(s)', 
-                                           'reactants': 'Not implemented', 
-                                           'products': 'Not implemented',
+                                           'reactants': get_base64_image_from_smiles(transformation.reactant_smiles), 
+                                           'products': get_base64_image_from_smiles(transformation.product_smiles),
                                          })
         context['transformation_list_with_details'] = zip(transformation_list, transformation_details)
         return context

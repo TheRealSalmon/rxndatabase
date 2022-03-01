@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('', views.home, name='home'),
     path('home/', views.home, name='home'),
     path('transformation/', views.TransformationListView.as_view(), name='transformation'),
     path('transformation/<int:pk>/', views.condition_by_transformation, name='condition_by_transformation'),

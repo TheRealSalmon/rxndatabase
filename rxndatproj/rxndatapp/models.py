@@ -3,13 +3,15 @@ from django.db import models
 # Create your models here.
 class Transformation(models.Model):
     name = models.CharField(max_length=100)
-    # alias = models.CharField(max_length=300)
+    alias = models.CharField(max_length=300, blank=True)
     reactant_smarts1 = models.CharField(max_length=50)
     reactant_smarts2 = models.CharField(max_length=50, blank=True)
     reactant_smarts3 = models.CharField(max_length=50, blank=True)
     reactant_smarts4 = models.CharField(max_length=50, blank=True)
     reactant_smarts5 = models.CharField(max_length=50, blank=True)
     product_smarts = models.CharField(max_length=50)
+    reactant_smiles = models.CharField(max_length=300, blank=True)
+    product_smiles = models.CharField(max_length=300, blank=True)
 
     def __str__(self):
         return self.name

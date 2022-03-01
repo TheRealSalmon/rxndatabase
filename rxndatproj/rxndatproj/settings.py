@@ -25,7 +25,9 @@ SECRET_KEY = '0vs#s5+%(x+l7!ll#_#04grd97e*ql^tq1qcgilbud#m*5jbr7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'therealsalmon.pythonanywhere.com'
+]
 
 
 # Application definition
