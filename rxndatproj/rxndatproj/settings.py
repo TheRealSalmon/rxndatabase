@@ -26,7 +26,8 @@ SECRET_KEY = '0vs#s5+%(x+l7!ll#_#04grd97e*ql^tq1qcgilbud#m*5jbr7'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'therealsalmon.pythonanywhere.com'
+    '127.0.0.1',
+    'therealsalmon.pythonanywhere.com',
 ]
 
 
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'rxndatproj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': ['templates', '/home/therealsalmon/rxndatabase/rxndatproj/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
