@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1> Condition by Transformation </h1>
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Condition</th>
+      <th scope="col">Catalysts</th>
+      <th scope="col">Reagents</th>
+      <th scope="col">Solvents</th>
+      <th scope="col">Reactants</th>
+      <th scope="col">Product</th>
+      <th scope="col">Air-Free</th>
+      <th scope="col">Water-Free</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for cd, sb in condition_and_substrate_list %}
+      <tr>
+        <td><a href="/condition/{{cd.id}}">{{ cd }}</a></td>
+        <td>{{ cd.catalyst1 |default_if_none:""}}<br>{{ cd.catalyst2 |default_if_none:""}}<br>{{ cd.catalyst3 |default_if_none:""}}</td>
+        <td>{{ cd.reagent1 |default_if_none:""}}<br>{{ cd.reagent2 |default_if_none:""}}<br>{{ cd.reagent3 |default_if_none:""}}<br>
+            {{ cd.reagent4 |default_if_none:""}}<br>{{ cd.reagent5 |default_if_none:""}}</td>
+        <td>{{ cd.solvent1 |default_if_none:"" }}<br>{{ cd.solvent2 |default_if_none:"" }}<br>{{ cd.solvent3 |default_if_none:"" }}</td>
+        <td>Not implemented</td>
+        <td>Not implemented</td>
+        <td>{% if cd.air_free == 0 %}
+              ambient air
+            {% elif cd.air_free == 1 %}
+              gas purge
+            {% else %}
+              nitrogen/argon backfill
+            {% endif %}
+        </td>
+        <td>{% if cd.water_free == 0 %}
+              no dry
+            {% else %}
+              oven-dry glassware
+            {% endif %}</td>
+      </tr>
+    {% empty %}
+      <p> No conditions for this transformation in database </p>
+    {% endfor %}
+  </tbody>
+  </table>
+{% endblock %}

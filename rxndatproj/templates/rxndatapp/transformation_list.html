@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1> Browse Transformations </h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Records</th>
+        <th scope="col">Reactants</th>
+        <th scope="col">Product</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tf, dt in transformation_list_with_details %}
+        <tr>
+          <th scope="row"><a href="{{ tf.get_absolute_url }}{{tf.id}}">{{tf.name}}</a></th>
+          <td>{{ dt.records }}</td>
+          <td>{{ dt.reactants }}</td>
+          <td>{{ dt.products }}</td>
+        </tr>
+      {% empty %}
+        <p>No transformations in database</p>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

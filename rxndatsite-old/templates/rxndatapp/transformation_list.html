@@ -4,7 +4,7 @@
   <h1> Transformations </h1>
   <u1>
     {% for tf in transformation_list %}
-      <li> {{tf.name}} </li>
+      <li> <a href="{{ tf.get_absolute_url }}{{tf.id}}">{{tf.name}}</a> </li>
     {% empty %}
       <p> No transformations in database </p>
     {% endfor %}

@@ -15,9 +15,6 @@ class TransformationListView(generic.ListView):
 
 def conditions_by_transformation(request, pk):
     conditions_list = Condition.objects.filter(transformation__id = pk)
-
-    print(f'\n Logging \n {conditions_list}\n')
-
     context = {
         'conditions_by_transformation_list': conditions_list,
     }

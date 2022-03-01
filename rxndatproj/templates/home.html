@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>The RxnDatabase</h1>
+  <p>Welcome to the RxnDatabase. The website is written by Sam using Django.</p>
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">Browse Transformations</h5>
+      <p class="card-text">Browse the database of organic reactions!</p>
+      <a href="#" class="card-link">Browse</a>
+    </div>
+  </div>
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <p>Recently added substrates:</p>
+        <table class="table">
+          <tbody>
+            {% for sb in substrate_list %}
+              <tr>
+                <th scope="col">{{ sb }}</th>
+              </tr>
+            {% empty %}
+              <p>No substrates in database</p>
+            {% endfor %}
+        </tbody>
+        </table>
+      </div>
+      <div class="col">
+        <p>Popular conditions:</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
