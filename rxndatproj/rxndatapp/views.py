@@ -23,7 +23,7 @@ def home(request):
 def get_base64_image_from_smiles(smi):
     # taken from https://iwatobipen.wordpress.com/2020/01/17/draw-rdkit-mol-reaction-object-on-html-without-static-png-image-rdkit-memo/
     m = Chem.MolFromSmiles(smi)
-    drawer = Draw.rdMolDraw2D.MolDraw2DCairo(300,300)
+    drawer = Draw.rdMolDraw2D.MolDraw2DCairo(200,200)
     drawer.DrawMolecule(m)
     drawer.FinishDrawing()
 
@@ -46,8 +46,8 @@ class TransformationListView(generic.ListView):
                 related_substrates = Substrate.objects.filter(condition__id = condition.id)
                 num_related_substrates += len(related_substrates)
             transformation_details.append({
-                                           'records': f'{len(related_conditions)} condition(s), {num_related_substrates} substrate(s)', 
-                                           'reactants': get_base64_image_from_smiles(transformation.reactant_smiles), 
+                                           'records': f'{len(related_conditions)} condition(s), {num_related_substrates} substrate(s)',
+                                           'reactants': get_base64_image_from_smiles(transformation.reactant_smiles),
                                            'products': get_base64_image_from_smiles(transformation.product_smiles),
                                          })
         context['transformation_list_with_details'] = zip(transformation_list, transformation_details)
