@@ -140,6 +140,8 @@ class Condition(models.Model):
     air_free = models.IntegerField(choices=air_free_choices, default=0)
     water_free = models.IntegerField(choices=water_free_choices, default=0)
     comment = models.CharField(max_length=300, blank=True)
+    reactant_smiles = models.CharField(max_length=300, blank=True)
+    product_smiles = models.CharField(max_length=300, blank=True)
 
     def __str__(self):
         return f'{self.transformation.name} ({self.comment})'
