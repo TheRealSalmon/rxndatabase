@@ -2,56 +2,175 @@
 
 {% block content %}
   <h1> Condition by Transformation </h1>
-  <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Condition</th>
-      <th scope="col">Catalysts</th>
-      <th scope="col">Reagents</th>
-      <th scope="col">Solvents</th>
-      <th scope="col">Reactants</th>
-      <th scope="col">Product</th>
-      <th scope="col">Air-Free</th>
-      <th scope="col">Water-Free</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for cd, substrates in condition_and_substrate_list %}
+  <div class="table-responsive">
+    <table class="table">
+    <thead>
       <tr>
-        <td><a href="/condition/{{cd.id}}">{{ cd }}</a></td>
-        <td>{{ cd.catalyst1 |default_if_none:""}}<br>{{ cd.catalyst2 |default_if_none:""}}<br>{{ cd.catalyst3 |default_if_none:""}}</td>
-        <td>{{ cd.reagent1 |default_if_none:""}}<br>{{ cd.reagent2 |default_if_none:""}}<br>{{ cd.reagent3 |default_if_none:""}}<br>
-            {{ cd.reagent4 |default_if_none:""}}<br>{{ cd.reagent5 |default_if_none:""}}</td>
-        <td>{{ cd.solvent1 |default_if_none:"" }}<br>{{ cd.solvent2 |default_if_none:"" }}<br>{{ cd.solvent3 |default_if_none:"" }}</td>
-        <td>Not implemented</td>
-        <td>Not implemented</td>
-        <td>{% if cd.air_free == 0 %}
+        <th scope="col">Condition</th>
+        <th scope="col">Reactants</th>
+        <th scope="col">Catalysts</th>
+        <th scope="col">Reagents</th>
+        <th scope="col">Solvents</th>
+        <th scope="col">Product</th>
+        <th scope="col">Air-/Water-free</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cd_sb_images in cd_sb_images_list %}
+        <tr>
+          <td><a href="/condition/{{cd.id}}/">{{ cd_sb_images.cd }}</a></td>
+          <td>
+            {% for re in cd_sb_images.cd_reactants %}
+              <img src="data:image/png;base64, {{ re }}" alt="reactant molecule">
+            {% empty %}
+              <p>No image available</p>
+            {% endfor %}
+          </td>
+          <td>{{ cd_sb_images.cd.catalyst1 |default_if_none:""}}<br>{{ cd_sb_images.cd.catalyst2 |default_if_none:""}}<br>{{ cd_sb_images.cd.catalyst3 |default_if_none:""}}</td>
+          <td>{{ cd_sb_images.cd.reagent1 |default_if_none:""}}<br>{{ cd_sb_images.cd.reagent2 |default_if_none:""}}<br>{{ cd_sb_images.cd.reagent3 |default_if_none:""}}<br>
+              {{ cd_sb_images.cd.reagent4 |default_if_none:""}}<br>{{ cd_sb_images.cd.reagent5 |default_if_none:""}}</td>
+          <td>{{ cd_sb_images.cd.solvent1 |default_if_none:"" }}<br>{{ cd_sb_images.cd.solvent2 |default_if_none:"" }}<br>{{ cd_sb_images.cd.solvent3 |default_if_none:"" }}</td>
+          <td>
+            {% for pd in cd_sb_images.cd_products %}
+              <img src="data:image/png;base64, {{ pd }}" alt="reactant molecule">
+            {% empty %}
+              <p>No image available</p>
+            {% endfor %}
+          </td>
+          <td>
+            {% if cd_sb_images.cd.air_free == 0 %}
               ambient air
-            {% elif cd.air_free == 1 %}
+            {% elif cd_sb_images.cd.air_free == 1 %}
               gas purge
             {% else %}
               nitrogen/argon backfill
-            {% endif %}
-        </td>
-        <td>{% if cd.water_free == 0 %}
-              no dry
+            {% endif %}/
+            <br>
+            {% if cd_sb_images.cd.water_free == 0 %}
+              no drying
             {% else %}
               oven-dry glassware
-            {% endif %}</td>
-      </tr>
-      <tr>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
           <td colspan=8>
+              <style>
+                #substrate_dropdown {
+                  overflow-x: scroll;
+                }
+              </style>
               <div class="dropdown">
-                  <button type="button" class="w-100 btn btn-secondary btn-lg btn-block dropdown-toggle">See Substrates</button>
-                  <div class="dropdown-menu">
-                    <p class="dropdown-item"> {{ substrates }}</p>
-                  </div>
+                <button class="btn btn-secondary dropdown-toggle w-100 btn-lg btn-block" role="button" data-bs-toggle="dropdown" data-bs-display="static" data-bs-auto-close="false">See Substrates</button>
+                <div class="dropdown-menu dropdown-menu-end w-100" id="substrate_dropdown">
+                  {% for sb, sb_reactants, sb_products in cd_sb_images.sb_and_images %}
+                    <div class="table-responsive">
+                      <table class="table" cellspacing="0">
+                      <center>Substrate {{ forloop.counter }}</center>
+                      <thead>
+                        <tr>
+                          <th scope="col">Reactants</th>
+                          <th scope="col">Conditions</th>
+                          <th scope="col">Product</th>
+                          <th scope="col">Yield</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            {% for re in sb_reactants %}
+                              <img src="data:image/png;base64, {{ re }}" alt="reactant molecule">
+                            {% empty %}
+                              <p>No image available</p>
+                            {% endfor %}
+                          </td>
+                          <td>
+                            {{ cd_sb_images.cd.catalyst1 |default_if_none:""}}{{ cd_sb_images.cd.catalyst2 |default_if_none:""}}<br>{{ cd_sb_images.cd.catalyst3 |default_if_none:""}}
+                            {{ cd_sb_images.cd.reagent1 |default_if_none:""}}<br>{{ cd_sb_images.cd.reagent2 |default_if_none:""}}<br>{{ cd_sb_images.cd.reagent3 |default_if_none:""}}<br>
+                            {{ cd_sb_images.cd.reagent4 |default_if_none:""}}<br>{{ cd_sb_images.cd.reagent5 |default_if_none:""}}
+                            {{ cd_sb_images.cd.solvent1 |default_if_none:"" }}<br>{{ cd_sb_images.cd.solvent2 |default_if_none:"" }}<br>{{ cd_sb_images.cd.solvent3 |default_if_none:"" }}
+                          </td>
+                          <td>
+                            {% for pd in sb_products %}
+                              <img src="data:image/png;base64, {{ pd }}" alt="product molecule">
+                            {% empty %}
+                              <p>No image available</p>
+                            {% endfor %}
+                          </td>
+                          <td>
+                            {{ sb.rxn_yield }}
+                          </td>
+                        </tr>
+                      </tbody>
+                      <thead>
+                        <tr>
+                          <th scope="col">Air-/Water-free</th>
+                          <th scope="col">Comments</th>
+                          <th scope="col">ELN Page</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            {% if sb.air_free == 0 %}
+                              ambient air
+                            {% elif sb.air_free == 1 %}
+                              gas purge
+                            {% else %}
+                              nitrogen/argon backfill
+                            {% endif %}/
+                            <br>
+                            {% if sb.water_free == 0 %}
+                              no drying
+                            {% else %}
+                              oven-dry glassware
+                            {% endif %}
+                          </td>
+                          <td>
+                            {{ sb.comment }}
+                          </td>
+                          <td>
+                            <a href="#">{{ sb.eln_page }}</a>
+                          </td>
+                        </tr>
+                      </tbody>
+                      </table>
+                    </div>
+                  {% empty %}
+                    No substrates available
+                  {% endfor %}
+                </div>
               </div>
           </td>
-      </tr>
-    {% empty %}
-      <p>No conditions for this transformation in database</p>
-    {% endfor %}
-  </tbody>
-  </table>
+        </tr>
+        <tr>
+          <td>
+            <br>
+            <br>
+            <br>
+            <br>
+          </td>
+        </tr>
+      {% empty %}
+        <p>No conditions for this transformation in database</p>
+      {% endfor %}
+    </tbody>
+    </table>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  </div>
 {% endblock %}

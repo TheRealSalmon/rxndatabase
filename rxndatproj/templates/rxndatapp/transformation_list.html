@@ -16,8 +16,20 @@
         <tr>
           <th scope="row"><a href="{{ tf.get_absolute_url }}{{tf.id}}">{{tf.name}}</a></th>
           <td>{{ dt.records }}</td>
-          <td><img src="data:image/png;base64, {{ dt.reactants }}" alt="reactant molecule"></td>
-          <td><img src="data:image/png;base64, {{ dt.products }}" alt="product molecule"></td>
+          <td>
+            {% for re in dt.reactants %}
+              <img src="data:image/png;base64, {{ re }}" alt="reactant molecule">
+            {% empty %}
+              <p>No image available</p>
+            {% endfor %}
+          </td>
+          <td>
+            {% for pd in dt.products %}
+              <img src="data:image/png;base64, {{ pd }}" alt="reactant molecule">
+            {% empty %}
+              <p>No image available</p>
+            {% endfor %}
+          </td>
         </tr>
       {% empty %}
         <p>No transformations in database</p>

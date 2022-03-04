@@ -10,7 +10,6 @@ from rdkit import Chem
 from rdkit.Chem import Draw
 
 import base64
-# import io
 
 # Create your views here.
 def home(request):
@@ -20,17 +19,19 @@ def home(request):
     }
     return render(request, 'home.html', context)
 
-def get_base64_image_from_smiles(smi):
+def get_base64_image_from_smiles(smi, width=150, height=100):
     # taken from https://iwatobipen.wordpress.com/2020/01/17/draw-rdkit-mol-reaction-object-on-html-without-static-png-image-rdkit-memo/
-    m = Chem.MolFromSmiles(smi)
-    drawer = Draw.rdMolDraw2D.MolDraw2DCairo(150,150)
-    drawer.DrawMolecule(m)
-    drawer.FinishDrawing()
-
-    # bytes_io = io.BytesIO()
-    text = drawer.GetDrawingText()
-
-    return base64.b64encode(text).decode('utf8')
+    smi_split = smi.split(" ")
+    images = []
+    for s in smi_split:
+        m = Chem.MolFromSmiles(s)
+        drawer = Draw.rdMolDraw2D.MolDraw2DCairo(width, height)
+        drawer.DrawMolecule(m)
+        drawer.FinishDrawing()
+        text = drawer.GetDrawingText()
+        images.append(base64.b64encode(text).decode('utf8'))
+    
+    return images
 
 class TransformationListView(generic.ListView):
     model = Transformation
@@ -55,11 +56,31 @@ class TransformationListView(generic.ListView):
 
 def condition_by_transformation(request, pk):
     condition_list = Condition.objects.filter(transformation__id = pk)
-    substrate_list = {}
+    cd_sb_images_list = []
     for condition in condition_list:
-        substrate_list[condition.id] = Substrate.objects.filter(condition__id = condition.id)
+        substrates = Substrate.objects.filter(condition__id = condition.id)
+        cd_sb_images_dict = {
+            'cd': condition,
+            'cd_reactants': get_base64_image_from_smiles(condition.reactant_smiles),
+            'cd_products': get_base64_image_from_smiles(condition.product_smiles),
+        }
+        sb_reactants = []
+        sb_products = []
+        for sb in substrates:
+            sb_reactants_list = [sb.reactant_smiles1, sb.reactant_smiles2, sb.reactant_smiles3, 
+                        sb.reactant_smiles4, sb.reactant_smiles5]
+            for i in range(sb_reactants_list.count('')):
+                sb_reactants_list.remove('')
+            sb_reactants_smi = ""
+            for re in sb_reactants_list:
+                sb_reactants_smi += f'{re} '
+            sb_reactants_smi = sb_reactants_smi.strip()
+            sb_reactants.append(get_base64_image_from_smiles(sb_reactants_smi, width=250, height=150))
+            sb_products.append(get_base64_image_from_smiles(sb.product_smiles, width=250, height=150))
+        cd_sb_images_dict['sb_and_images'] = zip(substrates, sb_reactants, sb_products)
+        cd_sb_images_list.append(cd_sb_images_dict)
     context = {
-        'condition_and_substrate_list': zip(condition_list, substrate_list)
+        'cd_sb_images_list': cd_sb_images_list,
     }
     return render(request, 'rxndatapp/condition_by_transformation.html', context)
 
