@@ -16,7 +16,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for cd, sb in condition_and_substrate_list %}
+    {% for cd, substrates in condition_and_substrate_list %}
       <tr>
         <td><a href="/condition/{{cd.id}}">{{ cd }}</a></td>
         <td>{{ cd.catalyst1 |default_if_none:""}}<br>{{ cd.catalyst2 |default_if_none:""}}<br>{{ cd.catalyst3 |default_if_none:""}}</td>
@@ -39,8 +39,18 @@
               oven-dry glassware
             {% endif %}</td>
       </tr>
+      <tr>
+          <td colspan=8>
+              <div class="dropdown">
+                  <button type="button" class="w-100 btn btn-secondary btn-lg btn-block dropdown-toggle">See Substrates</button>
+                  <div class="dropdown-menu">
+                    <p class="dropdown-item"> {{ substrates }}</p>
+                  </div>
+              </div>
+          </td>
+      </tr>
     {% empty %}
-      <p> No conditions for this transformation in database </p>
+      <p>No conditions for this transformation in database</p>
     {% endfor %}
   </tbody>
   </table>

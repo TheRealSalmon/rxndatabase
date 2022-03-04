@@ -19,7 +19,7 @@
           <tbody>
             {% for sb in substrate_list %}
               <tr>
-                <th scope="col">{{ sb }}</th>
+                <th scope="col"><a href="/substrate/{{ sb.id }}/">{{ sb }}</a></th>
               </tr>
             {% empty %}
               <p>No substrates in database</p>

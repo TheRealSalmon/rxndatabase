@@ -7,6 +7,7 @@ urlpatterns = [
     path('transformation/', views.TransformationListView.as_view(), name='transformation'),
     path('transformation/<int:pk>/', views.condition_by_transformation, name='condition_by_transformation'),
     path('condition/<int:pk>/', views.condition_by_index, name='condition_by_index'),
+    path('substrate/<int:pk>/', views.substrate_by_index, name='substrate_by_index'),
 
     # path('add/', views.add, name='add')
     path('add/transformation/', views.add_transformation, name='add_transformation'),

@@ -10,7 +10,7 @@ from rdkit import Chem
 from rdkit.Chem import Draw
 
 import base64
-import io
+# import io
 
 # Create your views here.
 def home(request):
@@ -23,11 +23,11 @@ def home(request):
 def get_base64_image_from_smiles(smi):
     # taken from https://iwatobipen.wordpress.com/2020/01/17/draw-rdkit-mol-reaction-object-on-html-without-static-png-image-rdkit-memo/
     m = Chem.MolFromSmiles(smi)
-    drawer = Draw.rdMolDraw2D.MolDraw2DCairo(200,200)
+    drawer = Draw.rdMolDraw2D.MolDraw2DCairo(150,150)
     drawer.DrawMolecule(m)
     drawer.FinishDrawing()
 
-    bytes_io = io.BytesIO()
+    # bytes_io = io.BytesIO()
     text = drawer.GetDrawingText()
 
     return base64.b64encode(text).decode('utf8')
@@ -69,6 +69,14 @@ def condition_by_index(request, pk):
         'cd': condition[0],
     }
     return render(request, 'rxndatapp/condition_by_index.html', context)
+
+def substrate_by_index(request, pk):
+    substrate = Substrate.objects.filter(id = pk)
+    context = {
+        'sb': substrate[0],
+        'cd': substrate[0].condition,
+    }
+    return render(request, 'rxndatapp/substrate_by_index.html', context)
 
 @staff_member_required
 def add_transformation(request):
