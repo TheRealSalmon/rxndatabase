@@ -138,6 +138,7 @@ class ReactionForm(forms.Form):
     reactant_smiles3 = forms.CharField(max_length=300, required=False)
     reactant_smiles4 = forms.CharField(max_length=300, required=False)
     reactant_smiles5 = forms.CharField(max_length=300, required=False)
+    product_smiles = forms.CharField(max_length=300)
     reagents = forms.CharField(max_length=300)
     solvents = forms.CharField(max_length=50)
     procedure = forms.CharField(max_length=500)

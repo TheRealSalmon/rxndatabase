@@ -200,6 +200,7 @@ class Reaction(models.Model):
     reactant_smiles3 = models.CharField(max_length=300, blank=True)
     reactant_smiles4 = models.CharField(max_length=300, blank=True)
     reactant_smiles5 = models.CharField(max_length=300, blank=True)
+    product_smiles = models.CharField(max_length=300)
     reagents = models.CharField(max_length=300)
     solvents = models.CharField(max_length=50)
     procedure = models.CharField(max_length=500)

@@ -191,6 +191,7 @@ def add_reaction(request):
 
         if form.is_valid():
             reaction = Reaction(**form.cleaned_data)
+            print(form.cleaned_data)
             reaction.save()
 
         return HttpResponseRedirect(reverse('add_reaction'))

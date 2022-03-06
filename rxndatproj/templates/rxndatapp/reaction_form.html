@@ -1,12 +1,190 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+{% load static %}
+  <script type="text/javascript" language="javascript" src="{% static 'jsme/jsme.nocache.js' %}"></script>
+  <script>
+    //this function will be called after the JavaScriptApplet code has been loaded.
+    function jsmeOnLoad() {
+        jsmeApplet_reactant1 = new JSApplet.JSME("jsme_reactant1", "380px", "340px");
+        jsmeApplet_reactant2 = new JSApplet.JSME("jsme_reactant2", "380px", "340px");
+        jsmeApplet_reactant3 = new JSApplet.JSME("jsme_reactant3", "380px", "340px");
+        jsmeApplet_reactant4 = new JSApplet.JSME("jsme_reactant4", "380px", "340px");
+        jsmeApplet_reactant5 = new JSApplet.JSME("jsme_reactant5", "380px", "340px");
+        jsmeApplet_product = new JSApplet.JSME("jsme_product", "380px", "340px");
+    }
+  </script>
+
   <h1> Add a Reaction </h1>
-  <form action='' method='post'>
+  <form id='reaction_form' action='' method='post'>
     {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-    </table>
-    <input type='submit' value='Submit'>
+    <div class="row">
+      <div class="col">
+        <table>
+          <tbody>
+            <tr>
+              <th>Reactant 1</th>
+              <td>
+                <div id="jsme_reactant1"></div>
+              </td>
+            </tr>
+            <tr>
+              <th>Reactant 2</th>
+              <td>
+                <div id="jsme_reactant2"></div>
+              </td>
+            </tr>
+            <tr>
+              <th>Reactant 3</th>
+              <td>
+                <div id="jsme_reactant3"></div>
+              </td>
+            </tr>
+            <!-- <tr>
+              <th>Reactant 4</th>
+              <td>
+                <div id="jsme_reactant4"></div>
+              </td>
+            </tr>
+            <tr>
+              <th>Reactant 5</th>
+              <td>
+                <div id="jsme_reactant5"></div>
+              </td>
+            </tr> -->
+          </tbody>
+        </table>
+      </div>
+      <div class="col">
+        <table>
+          <tbody>
+            <tr>
+              <th>Name of Reaction</th>
+              <td>
+                {{ form.name.errors }}
+                {{ form.name }}
+              </td>
+            </tr>
+            <tr>
+              <th>Reagents</th>
+              <td>
+                {{ form.reagents.errors }}
+                {{ form.reagents }}
+              </td>
+            </tr>
+            <tr>
+              <th>Solvents</th>
+              <td>
+                {{ form.solvents.errors }}
+                {{ form.solvents }}
+              </td>
+            </tr>
+            <tr>
+              <th>Procedures</th>
+              <td>
+                {{ form.procedure.errors }}
+                {{ form.procedure }}
+              </td>
+            </tr>
+            <tr>
+              <th>Reaction Yield (%)</th>
+              <td>
+                {{ form.rxn_yield.error }}
+                {{ form.rxn_yield }}
+              </td>
+            </tr>
+            <tr>
+              <th>ELN Page</th>
+              <td>
+                {{ form.eln_page.errors }}
+                {{ form.eln_page }}
+              </td>
+            </tr>
+            <tr>
+              <th>Reactant 1 SMILES</th>
+              <td>
+                {{ form.reactant_smiles1 }}
+              </td>
+            </tr>
+            <tr>
+              <th>Reactant 2 SMILES</th>
+              <td>
+                {{ form.reactant_smiles2 }}
+              </td>
+            </tr>
+            <tr>
+              <th>Reactant 3 SMILES</th>
+              <td>
+                {{ form.reactant_smiles3 }}
+              </td>
+            </tr>
+            <!-- <tr>
+              <th>Reactant 4 SMILES</th>
+              <td>
+                {{ form.reactant_smiles4 }}
+              </td>
+            </tr>
+            <tr>
+              <th>Reactant 5 SMILES</th>
+              <td>
+                {{ form.reactant_smiles5 }}
+              </td>
+            </tr> -->
+            <tr>
+              <th>Product SMILES</th>
+              <td>
+                {{ form.product_smiles }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <button type="button" onclick="update_smiles()">Update SMILES</button>
+        <button type="submit">Submit</button>
+        <script>
+          function update_smiles() {
+            document.getElementById("id_reactant_smiles1").value = jsmeApplet_reactant1.smiles();
+            document.getElementById("id_reactant_smiles2").value = jsmeApplet_reactant2.smiles();
+            document.getElementById("id_reactant_smiles3").value = jsmeApplet_reactant3.smiles();
+            // document.getElementById("id_reactant_smiles4").value = jsmeApplet_reactant4.smiles();
+            // document.getElementById("id_reactant_smiles5").value = jsmeApplet_reactant5.smiles();
+            document.getElementById("id_product_smiles").value = jsmeApplet_product.smiles();
+          }
+        </script>
+        <!-- <button type="submit" onclick="formSubmit()">Submit</button> -->
+        <!-- <script type="text/javascript">
+          function formSubmit() {
+            let form = document.getElementById("reaction_form");
+
+            form.submit();
+            // document.getElementById("reaction_form").submit();
+          }
+        </script> -->
+      </div>
+      <div class="col">
+        <table>
+          <tbody>
+            <tr>
+              <th>Product</th>
+              <td>
+                <div id="jsme_product"></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </form>
+
+  <p id="demo"></p>
+  <script>
+    // var form = document.getElementById("reaction_form").elements;
+    // var data = new FormData(form):
+    var tags = document.getElementsByTagName("*");
+    for (var i=0, max=tags.length; i < max; i++) {
+      console.log(tags[i]);
+    }
+    // document.getElementById("demo").innerHTML = data;
+  </script>
 {% endblock %}

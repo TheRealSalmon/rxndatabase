@@ -18,7 +18,10 @@
     <tbody>
       {% for cd_sb_images in cd_sb_images_list %}
         <tr>
-          <td><a href="/condition/{{cd.id}}/">{{ cd_sb_images.cd }}</a></td>
+          <!-- <td><a href="/condition/{{cd.id}}/">{{ cd_sb_images.cd }}</a></td> -->
+          <td>
+            {{ cd_sb_images.cd }}
+          </td>
           <td>
             {% for re in cd_sb_images.cd_reactants %}
               <img src="data:image/png;base64, {{ re }}" alt="reactant molecule">
