@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('home/', views.home, name='home'),
+    path('tutorial/', views.tutorial, name='tutorial'),
     path('transformation/', views.TransformationListView.as_view(), name='transformation'),
     path('transformation/<int:pk>/', views.condition_by_transformation, name='condition_by_transformation'),
     path('condition/<int:pk>/', views.condition_by_index, name='condition_by_index'),

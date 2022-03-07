@@ -19,6 +19,9 @@ def home(request):
     }
     return render(request, 'home.html', context)
 
+def tutorial(request):
+    return render(request, 'tutorial.html')
+
 def get_base64_image_from_smiles(smi, width=150, height=100):
     # taken from https://iwatobipen.wordpress.com/2020/01/17/draw-rdkit-mol-reaction-object-on-html-without-static-png-image-rdkit-memo/
     smi_split = smi.split(" ")
